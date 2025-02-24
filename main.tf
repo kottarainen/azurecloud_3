@@ -25,10 +25,6 @@ resource "azurerm_subnet" "subnet" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "terraform-lab-rg"
-  location = "East US"
-}
 resource "azurerm_network_security_group" "nsg" {
   name                = "terraform-lab-nsg"
   location            = azurerm_resource_group.rg.location
