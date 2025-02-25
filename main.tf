@@ -10,6 +10,7 @@ terraform {
 resource "azurerm_resource_group" "rg" {
   name     = "terraform-lab-rg"
   location = "East US"
+  tags     = var.tags
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -17,6 +18,7 @@ resource "azurerm_virtual_network" "vnet" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/16"]
+  tags                = var.tags
 }
 resource "azurerm_subnet" "subnet" {
   name                 = "terraform-lab-subnet"
@@ -41,6 +43,7 @@ resource "azurerm_network_security_group" "nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+  tags = var.tags
 }
 
 resource "azurerm_network_interface_security_group_association" "nic_nsg" {
@@ -53,6 +56,7 @@ resource "azurerm_public_ip" "public_ip" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Static"
+  tags                = var.tags
 }
 resource "azurerm_network_interface" "nic" {
   name                = "terraform-lab-nic"
@@ -65,6 +69,7 @@ resource "azurerm_network_interface" "nic" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.public_ip.id
   }
+  tags = var.tags
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
@@ -88,4 +93,5 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
+  tags = var.tags
 }
